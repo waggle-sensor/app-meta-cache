@@ -25,7 +25,7 @@ To test this tool locally,
 $ docker run -d --name wes-app-meta-cache -p 6379:6379 redis:7.0.4
 
 # --kubeconfig requires a correct kubeconfig to access a Kubernetes cluster that has the node name with a zone label
-$ docker run --rm waggle/app-meta-cache:latest --host localhost set --kubeconfig /tmp/kubeconfig --nodename "000048b02d0766be.ws-nxcore" app-meta.test '{"host": "000048b02d0766be.ws-nxcore"}'
+$ docker run --rm --entrypoint /update-app-cache waggle/app-meta-cache:latest --host localhost set --kubeconfig /tmp/kubeconfig --nodename "000048b02d0766be.ws-nxcore" app-meta.test '{"host": "000048b02d0766be.ws-nxcore"}'
 added zone core
 
 # retrieve stored app meta information to ensure the zone attribute is included
