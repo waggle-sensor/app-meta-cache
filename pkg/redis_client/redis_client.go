@@ -2,6 +2,7 @@ package redis_client
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/go-redis/redis/v9"
@@ -17,8 +18,10 @@ type RedisClient struct {
 
 func NewRedisClient(host string) *RedisClient {
 	return &RedisClient{
-		client: redis.NewClient(&redis.Options{}),
-		host:   host,
+		client: redis.NewClient(&redis.Options{
+			Addr: fmt.Sprintf("%s:6379", host),
+		}),
+		host: host,
 	}
 }
 

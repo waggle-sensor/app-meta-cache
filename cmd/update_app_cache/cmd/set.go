@@ -15,7 +15,7 @@ var (
 )
 
 func init() {
-	setCmd.Flags().StringVar(&kubeconfig, "kubeconfig", getenv("KUBECONFIG", "/root/.kube/config"), "path to the kubeconfig file")
+	setCmd.Flags().StringVar(&kubeconfig, "kubeconfig", getenv("KUBECONFIG", ""), "path to the kubeconfig file")
 	setCmd.Flags().StringVar(&nodeName, "nodename", getenv("HOST", ""), "Kubernetes node name to get node labels")
 	rootCmd.AddCommand(setCmd)
 }
