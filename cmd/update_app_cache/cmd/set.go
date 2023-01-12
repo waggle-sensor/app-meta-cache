@@ -33,23 +33,19 @@ var setCmd = &cobra.Command{
 			return fmt.Errorf("failed to parse value %q: %s", value, err.Error())
 		}
 		if kubeClient, err := kube.NewKubeClient(kubeconfig); err != nil {
-			fmt.Printf("failed to get Kubernetes client: %s\n", err.Error())
-			fmt.Printf("skip adding node label to app meta cache\n")
+			return fmt.Errorf("failed to get Kubernetes client: %s", err.Error())
 		} else {
 			if nodeName == "" {
-				fmt.Printf("no Kubernetes node name is given\n")
-				fmt.Printf("skip adding node label to app meta cache\n")
+				return fmt.Errorf("no Kubernetes node name is given")
 			} else {
 				if labels, err := kubeClient.GetNodeLabels(nodeName); err != nil {
-					fmt.Printf("failed to get labels from node %q: %s\n", nodeName, err.Error())
-					fmt.Printf("skip adding node label to app meta cache\n")
+					return fmt.Errorf("failed to get labels from node %q: %s", nodeName, err.Error())
 				} else {
 					if zone, found := labels["zone"]; found {
 						meta["zone"] = zone
 						fmt.Printf("added zone %s\n", zone)
 					} else {
-						fmt.Printf("failed to find zone label from node %q: %v\n", nodeName, labels)
-						fmt.Printf("skip adding node label to app meta cache\n")
+						return fmt.Errorf("failed to find zone label from node %q: %v", nodeName, labels)
 					}
 				}
 			}
