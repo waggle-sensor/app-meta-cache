@@ -1,10 +1,12 @@
 FROM golang:1.19 as builder
-WORKDIR $GOPATH/src/github.com/waggle-sensor/app-meta-cache
-ARG TARGETARCH
+
+WORKDIR /build
+
+COPY go.mod go.sum ./
+RUN go mod download
+
 COPY . .
-RUN CGO_ENABLED=0 go build -o update-app-cache cmd/update_app_cache/main.go \
-  && mkdir -p /app \
-  && cp update-app-cache /app
+RUN CGO_ENABLED=0 go build -o update-app-cache cmd/update_app_cache/main.go
 
 FROM redis:7.0.4
-COPY --from=builder /app/update-app-cache /
+COPY --from=builder /build/update-app-cache /
